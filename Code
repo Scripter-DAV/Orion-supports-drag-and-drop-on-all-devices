@@ -1732,7 +1732,7 @@ ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- KĂ­ch thÆ°á»›c hĂ¬nh tr
 ToggleButton.Position = UDim2.new(0.9, 0, 0.1, 0) -- Vá»‹ trĂ­ ban Ä‘áº§u
 ToggleButton.BackgroundTransparency = 1
 ToggleButton.Image = "rbxassetid://96063673786489" -- HĂ¬nh áº£nh nĂºt (cĂ³ thá»ƒ thay Ä‘á»•i)
-ToggleButton.Parent = Orion.Parent
+ToggleButton.Parent = Orion
 ToggleButton.Visible = false -- áº¨n ban Ä‘áº§u
 
 local UIS = game:GetService("UserInputService")
@@ -1766,20 +1766,14 @@ UIS.InputChanged:Connect(function(Input)
 end)
 
 ToggleButton.MouseButton1Click:Connect(function()
-    if MainWindow then
-        MainWindow.Visible = true -- Hiá»‡n láº¡i UI Orion
-    end
+    MainWindow.Visible = true -- Hiá»‡n láº¡i UI Orion
     ToggleButton.Visible = false
 end)
 
--- Kiá»ƒm tra khi UI Orion bá»‹ áº©n vĂ  hiá»ƒn thá»‹ nĂºt trĂ²n
-task.spawn(function()
-    while true do
-        task.wait(0.5) -- Kiá»ƒm tra thÆ°á»ng xuyĂªn hÆ¡n
-        if MainWindow and not MainWindow.Visible then -- Náº¿u UI Orion bá»‹ áº©n
-            ToggleButton.Visible = true
-        end
-    end
+-- Hiá»ƒn thá»‹ nĂºt khi UI Orion bá»‹ áº©n
+AddConnection(CloseBtn.MouseButton1Up, function()
+    MainWindow.Visible = false
+    ToggleButton.Visible = true -- Hiá»ƒn thá»‹ nĂºt trĂ²n khi UI bá»‹ áº©n
 end)
 
 return OrionLib
