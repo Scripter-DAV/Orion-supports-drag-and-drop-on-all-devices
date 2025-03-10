@@ -1,5 +1,3 @@
-
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -98,34 +96,41 @@ task.spawn(function()
 end)
 
 local function AddDraggingFunctionality(DragPoint, Main)
-	pcall(function()
-		local Dragging, DragInput, MousePos, FramePos = false
-		DragPoint.InputBegan:Connect(function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-				Dragging = true
-				MousePos = Input.Position
-				FramePos = Main.Position
+    pcall(function()
+        local Dragging, DragInput, MousePos, FramePos
 
-				Input.Changed:Connect(function()
-					if Input.UserInputState == Enum.UserInputState.End then
-						Dragging = false
-					end
-				end)
-			end
-		end)
-		DragPoint.InputChanged:Connect(function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseMovement then
-				DragInput = Input
-			end
-		end)
-		UserInputService.InputChanged:Connect(function(Input)
-			if Input == DragInput and Dragging then
-				local Delta = Input.Position - MousePos
-				TweenService:Create(Main, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
-			end
-		end)
-	end)
-end   
+        local function Update(Input)
+            local Delta = Input.Position - MousePos
+            Main.Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
+        end
+
+        DragPoint.InputBegan:Connect(function(Input)
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+                Dragging = true
+                MousePos = Input.Position
+                FramePos = Main.Position
+
+                Input.Changed:Connect(function()
+                    if Input.UserInputState == Enum.UserInputState.End then
+                        Dragging = false
+                    end
+                end)
+            end
+        end)
+
+        DragPoint.InputChanged:Connect(function(Input)
+            if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
+                DragInput = Input
+            end
+        end)
+
+        UserInputService.InputChanged:Connect(function(Input)
+            if Input == DragInput and Dragging then
+                Update(Input)
+            end
+        end)
+    end)
+end
 
 local function Create(Name, Properties, Children)
 	local Object = Instance.new(Name)
@@ -1711,8 +1716,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	end  
 	
 	OrionLib:MakeNotification({
-		Name = "UI Library Upgrade",
-		Content = "New UI Library Available at sirius.menu/discord and sirius.menu/rayfield",
+		Name = "MADE BY DAV",
+		Content = "DO YOU LIKE IT?",
 		Time = 5
 	})
 	
@@ -1724,56 +1729,5 @@ end
 function OrionLib:Destroy()
 	Orion:Destroy()
 end
-
-
--- Táº¡o nĂºt trĂ²n kĂ©o tháº£ Ä‘á»ƒ báº­t láº¡i UI Orion
-local ToggleButton = Instance.new("ImageButton")
-ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- KĂ­ch thÆ°á»›c hĂ¬nh trĂ²n
-ToggleButton.Position = UDim2.new(0.9, 0, 0.1, 0) -- Vá»‹ trĂ­ ban Ä‘áº§u
-ToggleButton.BackgroundTransparency = 1
-ToggleButton.Image = "rbxassetid://96063673786489" -- HĂ¬nh áº£nh nĂºt (cĂ³ thá»ƒ thay Ä‘á»•i)
-ToggleButton.Parent = Orion
-ToggleButton.Visible = false -- áº¨n ban Ä‘áº§u
-
-local UIS = game:GetService("UserInputService")
-local Dragging, DragInput, MousePos, FramePos
-
-ToggleButton.InputBegan:Connect(function(Input)
-    if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-        Dragging = true
-        MousePos = Input.Position
-        FramePos = ToggleButton.Position
-
-        Input.Changed:Connect(function()
-            if Input.UserInputState == Enum.UserInputState.End then
-                Dragging = false
-            end
-        end)
-    end
-end)
-
-ToggleButton.InputChanged:Connect(function(Input)
-    if Input.UserInputType == Enum.UserInputType.MouseMovement then
-        DragInput = Input
-    end
-end)
-
-UIS.InputChanged:Connect(function(Input)
-    if Input == DragInput and Dragging then
-        local Delta = Input.Position - MousePos
-        ToggleButton.Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
-    end
-end)
-
-ToggleButton.MouseButton1Click:Connect(function()
-    MainWindow.Visible = true -- Hiá»‡n láº¡i UI Orion
-    ToggleButton.Visible = false
-end)
-
--- Hiá»ƒn thá»‹ nĂºt khi UI Orion bá»‹ áº©n
-AddConnection(CloseBtn.MouseButton1Up, function()
-    MainWindow.Visible = false
-    ToggleButton.Visible = true -- Hiá»ƒn thá»‹ nĂºt trĂ²n khi UI bá»‹ áº©n
-end)
 
 return OrionLib
