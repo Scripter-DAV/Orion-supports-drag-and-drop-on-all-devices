@@ -1766,15 +1766,17 @@ UIS.InputChanged:Connect(function(Input)
 end)
 
 ToggleButton.MouseButton1Click:Connect(function()
-    Orion.Enabled = true
+    if MainWindow then
+        MainWindow.Visible = true -- Hiá»‡n láº¡i UI Orion
+    end
     ToggleButton.Visible = false
 end)
 
--- Kiá»ƒm tra khi UI Orion bá»‹ áº©n
+-- Kiá»ƒm tra khi UI Orion bá»‹ áº©n vĂ  hiá»ƒn thá»‹ nĂºt trĂ²n
 task.spawn(function()
     while true do
-        task.wait(1) -- Kiá»ƒm tra má»—i giĂ¢y
-        if not Orion.Frame.Visible then -- Kiá»ƒm tra náº¿u UI Orion bá»‹ áº©n
+        task.wait(0.5) -- Kiá»ƒm tra thÆ°á»ng xuyĂªn hÆ¡n
+        if MainWindow and not MainWindow.Visible then -- Náº¿u UI Orion bá»‹ áº©n
             ToggleButton.Visible = true
         end
     end
