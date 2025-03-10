@@ -1770,21 +1770,13 @@ ToggleButton.MouseButton1Click:Connect(function()
     ToggleButton.Visible = false
 end)
 
--- Kiá»ƒm tra khi UI Orion bá»‹ táº¯t
+-- Kiá»ƒm tra khi UI Orion bá»‹ áº©n
 task.spawn(function()
     while true do
         task.wait(1) -- Kiá»ƒm tra má»—i giĂ¢y
-        if not Orion.Enabled then
+        if not Orion.Frame.Visible then -- Kiá»ƒm tra náº¿u UI Orion bá»‹ áº©n
             ToggleButton.Visible = true
         end
-    end
-end)
-
--- áº¨n nĂºt khi nháº¥n RightShift Ä‘á»ƒ má»Ÿ láº¡i UI
-UIS.InputBegan:Connect(function(Input)
-    if Input.KeyCode == Enum.KeyCode.RightShift then
-        Orion.Enabled = true
-        ToggleButton.Visible = false
     end
 end)
 
