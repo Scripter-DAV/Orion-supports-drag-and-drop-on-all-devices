@@ -1,3 +1,5 @@
+
+
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -1733,6 +1735,7 @@ ToggleButton.Image = "rbxassetid://96063673786489" -- HĂ¬nh áº£nh nĂºt (c
 ToggleButton.Parent = Orion.Parent
 ToggleButton.Visible = false -- áº¨n ban Ä‘áº§u
 
+local UIS = game:GetService("UserInputService")
 local Dragging, DragInput, MousePos, FramePos
 
 ToggleButton.InputBegan:Connect(function(Input)
@@ -1755,7 +1758,7 @@ ToggleButton.InputChanged:Connect(function(Input)
     end
 end)
 
-UserInputService.InputChanged:Connect(function(Input)
+UIS.InputChanged:Connect(function(Input)
     if Input == DragInput and Dragging then
         local Delta = Input.Position - MousePos
         ToggleButton.Position = UDim2.new(FramePos.X.Scale, FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
@@ -1767,16 +1770,18 @@ ToggleButton.MouseButton1Click:Connect(function()
     ToggleButton.Visible = false
 end)
 
--- Hiá»ƒn thá»‹ nĂºt khi UI bá»‹ táº¯t
-if CloseBtn then
-    CloseBtn.MouseButton1Click:Connect(function()
-        Orion.Enabled = false
-        ToggleButton.Visible = true
-    end)
-end
+-- Kiá»ƒm tra khi UI Orion bá»‹ táº¯t
+task.spawn(function()
+    while true do
+        task.wait(1) -- Kiá»ƒm tra má»—i giĂ¢y
+        if not Orion.Enabled then
+            ToggleButton.Visible = true
+        end
+    end
+end)
 
 -- áº¨n nĂºt khi nháº¥n RightShift Ä‘á»ƒ má»Ÿ láº¡i UI
-UserInputService.InputBegan:Connect(function(Input)
+UIS.InputBegan:Connect(function(Input)
     if Input.KeyCode == Enum.KeyCode.RightShift then
         Orion.Enabled = true
         ToggleButton.Visible = false
